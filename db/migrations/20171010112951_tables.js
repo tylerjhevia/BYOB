@@ -15,7 +15,8 @@ exports.up = function(knex, Promise) {
       table.string("name");
       table.string("brewery");
       table.string("type");
-      table.foreign("brewery_id").references("breweries.id");
+      table.integer("breweryID");
+      table.foreign("breweryID").references("breweries.id");
 
       table.timestamps(true, true);
     })
@@ -24,7 +25,7 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return Promise.all([
-    knex.schema.dropTable("breweries"),
-    knex.schema.dropTable("beers")
+    knex.schema.dropTable("beers"),
+    knex.schema.dropTable("breweries")
   ]);
 };
