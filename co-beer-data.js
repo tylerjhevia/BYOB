@@ -1,4 +1,4 @@
-export default [
+module.exports = [
 	{
 		"beerName": "105 West / Chain Reaction Intergalactichoptopia",
 		"beerType": "Imperial IPA",
@@ -15629,6 +15629,7 @@ export default [
 		"beerType": "American Pale Ale",
 		"breweryName": "Cerebral Brewing"
 	},
+
 	{
 		"beerName": "Cerebral Work From Home",
 		"beerType": "Imperial Porter",
@@ -78379,3 +78380,5 @@ export default [
 		"breweryName": "Zwei Brewing"
 	}
 ]
+
+
