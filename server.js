@@ -20,6 +20,21 @@ app.listen(app.get("port"), () => {
 });
 
 app.get("/api/v1/breweries", (request, response) => {
+  if (request.query.location) {
+    const { location } = request.query;
+    return database("breweries")
+      .select()
+      .where("location", location)
+      .then(breweries => {
+        breweries.length
+          ? response.status(200).json(breweries)
+          : response.status(404).json({
+              error: `Could not find any breweries with location: ${location}`
+            });
+      })
+      .catch(error => response.sendStatus(500).json({ error }));
+  }
+
   database("breweries")
     .select()
     .then(breweries => {
@@ -73,6 +88,21 @@ app.get("/api/v1/beers/:breweryID", (request, response) => {
     .catch(error => {
       response.sendStatus(500).json({ error });
     });
+});
+
+app.get("/api/v1/beers/:location", (request, response) => {
+  const { location } = request.params;
+  database("breweries")
+    .select()
+    .where("location", location)
+    .then(breweries => {
+      breweries.length
+        ? response.status(200).json(breweries)
+        : response.status(404).json({
+            error: `Could nof find any breweries with location: ${location}`
+          });
+    })
+    .catch(error => response.sendStatus(500).json({ error }));
 });
 
 module.exports = app;
