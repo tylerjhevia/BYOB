@@ -46,6 +46,21 @@ app.get("/api/v1/breweries", (request, response) => {
 });
 
 app.get("/api/v1/beers", (request, response) => {
+  if (request.query.type) {
+    const { type } = request.query;
+    return database("beers")
+      .select()
+      .where('type', type)
+      .then(beers => {
+        beers.length
+        ? response.status(200).json(beers)
+        : response.status(404).json({ error: `Could not find any beers of type: ${type}. Check your format. ` })
+      })
+      .catch(error => {
+        response.sendStatus(500).json({ error });
+      });
+  }
+
   database("beers")
     .select()
     .then(beers => {
@@ -89,5 +104,10 @@ app.get("/api/v1/beers/:breweryID", (request, response) => {
       response.sendStatus(500).json({ error });
     });
 });
+
+
+app.post('/api/v1/breweries', (request, response) => {
+
+})
 
 module.exports = app;
