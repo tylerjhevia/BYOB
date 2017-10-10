@@ -31,4 +31,15 @@ app.get('/api/v1/breweries', (request, response) => {
     });
 });
 
+app.get('/api/v1/beers', (request, response) => {
+  database('beers')
+    .select()
+    .then((beers) => {
+      response.status(200).json(beers);
+    })
+    .catch((error) => {
+      response.sendStatus(500).json({ error });
+    });
+});
+
 module.exports = app;
