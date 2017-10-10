@@ -42,4 +42,21 @@ app.get('/api/v1/beers', (request, response) => {
     });
 });
 
+app.get('/api/v1/breweries/:id', (request, response) => {
+  const { id } = request.params;
+
+  database('breweries')
+    .select()
+    .where('id', id)
+    .then((brewery) => {
+      if (id !== num) {
+
+      }
+      else if (brewery.length === 0) {
+        response.status(404).json({ error: `Could not find a brewery with that id: ${id}`})
+      }
+
+    })
+})
+
 module.exports = app;
