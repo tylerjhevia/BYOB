@@ -1,0 +1,102 @@
+[
+  {
+    "beerName": "105 West / Chain Reaction Intergalactichoptopia",
+    "beerType": "Imperial IPA",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Belgian Pale",
+    "beerType": "Belgian Ale",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Berliner Weisse",
+    "beerType": "Berliner Weisse",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Chile Hefeweizen",
+    "beerType": "German Hefeweizen",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Crowfoot Coffee Brown",
+    "beerType": "Brown Ale",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Deez Nuts",
+    "beerType": "Premium Bitter/ESB",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Dry Stout",
+    "beerType": "Dry Stout",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West English Brown",
+    "beerType": "Brown Ale",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West English Mild",
+    "beerType": "Mild Ale",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Grapefruit IPA",
+    "beerType": "India Pale Ale (IPA)",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West IPA",
+    "beerType": "India Pale Ale (IPA)",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Lemonrye",
+    "beerType": "Wheat Ale",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Northern English Brown",
+    "beerType": "Brown Ale",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Quadrophenia",
+    "beerType": "Abt/Quadrupel",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Raspberry Saison",
+    "beerType": "Saison",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Russian Imperial Stout",
+    "beerType": "Imperial Stout",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Saison",
+    "beerType": "Saison",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Scottish Ale",
+    "beerType": "Scottish Ale",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Session IPA",
+    "beerType": "Session IPA",
+    "breweryName": "105 West Brewing Company"
+  },
+  {
+    "beerName": "105 West Too Drunk to Funk",
+    "beerType": "Sour/Wild Ale",
+    "breweryName": "105 West Brewing Company"
+  }
+]
