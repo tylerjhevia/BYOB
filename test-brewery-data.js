@@ -1,4 +1,4 @@
-export default [
+module.exports = [
   {
     "location": "Castle Rock",
     "name": "105 West Brewing Company",
