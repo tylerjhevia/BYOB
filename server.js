@@ -54,7 +54,24 @@ app.get("/api/v1/breweries/:id", (request, response) => {
             .json({ error: `Could not find a brewery with id: ${id}` });
     })
     .catch(error => {
-      response.sendStatus(500).json({ error, id });
+      response.sendStatus(500).json({ error });
+    });
+});
+
+app.get("/api/v1/beers/:breweryID", (request, response) => {
+  const { breweryID } = request.params;
+  database("beers")
+    .select()
+    .where("breweryID", breweryID)
+    .then(beers => {
+      beers.length
+        ? response.status(200).json(beers)
+        : response
+            .status(404)
+            .json({ error: `Could not find any beers with breweryID: ${id}` });
+    })
+    .catch(error => {
+      response.sendStatus(500).json({ error });
     });
 });
 
