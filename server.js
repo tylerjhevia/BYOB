@@ -107,7 +107,18 @@ app.get("/api/v1/beers/:breweryID", (request, response) => {
 
 
 app.post('/api/v1/breweries', (request, response) => {
+  const requiredKeys = ['name', 'location', 'beerCount', 'year'];
 
+  for (let keys of requiredKeys) {
+    if (!request.body[keys]) {
+      return response.status(400).json({ error: `Check your format. Missing key: ${keys}` })
+    }
+  }
+
+  database('breweries')
+    .insert(request.body, '*')
+    .then(brewery => response.status(201).json(brewery[0]))
+    .catch(error => response.status(500).json({ error }));
 })
 
 module.exports = app;
