@@ -40,6 +40,7 @@ app.post('/api/v1/authenticate', (request, response) => {
 });
 
 app.get('/api/v1/breweries', (request, response) => {
+  console.log('key: ', secretKey);
   if (request.query.location) {
     const { location } = request.query;
     return database('breweries')
