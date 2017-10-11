@@ -38,7 +38,6 @@ describe("API routes", () => {
   describe("GET /api/v1/breweries", () => {
     it("should fetch all breweries", done => {
       chai.request(server).get("/api/v1/breweries").end((err, response) => {
-        console.log(response.body);
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a("array");
@@ -51,6 +50,32 @@ describe("API routes", () => {
         response.body[0].beerCount.should.be.a("number");
         response.body[0].should.have.property("year");
         response.body[0].year.should.be.a("number");
+        response.body[0].should.have.property("id");
+        response.body[0].id.should.be.a("number");
+        response.body[0].should.have.property("created_at");
+        response.body[0].created_at.should.be.a("string");
+        response.body[0].should.have.property("updated_at");
+        response.body[0].updated_at.should.be.a("string");
+        done();
+      });
+    });
+  });
+
+  describe("GET /api/v1/beers", () => {
+    it("should fetch all beers", done => {
+      chai.request(server).get("/api/v1/beers").end((err, response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a("array");
+        response.body.length.should.equal(77);
+        response.body[0].should.have.property("name");
+        response.body[0].name.should.be.a("string");
+        response.body[0].should.have.property("type");
+        response.body[0].type.should.be.a("string");
+        response.body[0].should.have.property("brewery");
+        response.body[0].brewery.should.be.a("string");
+        response.body[0].should.have.property("breweryID");
+        response.body[0].breweryID.should.be.a("number");
         response.body[0].should.have.property("id");
         response.body[0].id.should.be.a("number");
         response.body[0].should.have.property("created_at");
