@@ -156,4 +156,15 @@ app.patch('/api/v1/breweries/:id', (request, response) => {
 app.patch('/api/v1/breweries/:id', (request, response) => {
 
 })
+
+app.delete('/api/v1/breweries/:id', (request, response) => {
+  database('breweries')
+    .del()
+    .where('id', request.params.id)
+    .then((length) => {
+      console.log(length);
+      return length > 0 ? response.status(204) : response.status(422).send({ error: `Nothing to delete with id of ${request.params.id}` })
+    })
+    .catch((error) => response.status(500).json({ error }))
+})
 module.exports = app;
