@@ -111,3 +111,7 @@ describe("API routes", () => {
     });
   });
 });
+
+after(() => {
+  process.exit();
+});
