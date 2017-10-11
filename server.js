@@ -153,9 +153,33 @@ app.patch('/api/v1/breweries/:id', (request, response) => {
     .catch((error) => response.status(500).json({ error }))
   })
 
-app.patch('/api/v1/breweries/:id', (request, response) => {
+// app.get('/api/v1/beers/:breweryID', (request, response) => {
+//   database('beers')
+//     .select()
+//     .where('breweryID', request.params.breweryID)
+//     .count('* as total')
+//     .then((count) => {
+//       console.log(count);
+//       response.status(200)
+//     })
+//     .catch((error) => response.status(500).json({ error }))
+// })
 
+app.patch('/api/v1/beers/:id', (request, response) => {
+  database('beers')
+    .where('id', request.params.id)
+    .update({
+      name: request.body.name
+    }, '*')
+    .then((update) => {
+      if (!update.length) {
+        response.status(404).json({ error: `Cannot find a beer with the id of ${request.params.id}`})
+      }
+      response.status(200).json({ updatedBeer: update[0] })
+    })
+    .catch((error) => response.status(500).json({ error }))
 })
+
 
 app.delete('/api/v1/breweries/:id', (request, response) => {
   database('breweries')
@@ -178,6 +202,7 @@ app.delete('/api/v1/beers/:id', (request, response) => {
     })
     .catch((error) => response.status(500).json({ error }))
 })
+
 
 
 module.exports = app;
