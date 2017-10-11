@@ -163,8 +163,21 @@ app.delete('/api/v1/breweries/:id', (request, response) => {
     .where('id', request.params.id)
     .then((length) => {
       console.log(length);
-      return length > 0 ? response.status(204) : response.status(422).send({ error: `Nothing to delete with id of ${request.params.id}` })
+      return length > 0 ? response.status(204).json({ message: 'Successful Delete'}) : response.status(422).send({ error: `Nothing to delete with id of ${request.params.id}` })
     })
     .catch((error) => response.status(500).json({ error }))
 })
+
+app.delete('/api/v1/beers/:id', (request, response) => {
+  database('beers')
+    .del()
+    .where('id', request.params.id)
+    .then((length) => {
+      console.log(length);
+      return length > 0 ? response.status(204).json({ message: 'Successful Delete'}) : response.status(422).send({ error: `Nothing to delete with id of ${request.params.id}` })
+    })
+    .catch((error) => response.status(500).json({ error }))
+})
+
+
 module.exports = app;
