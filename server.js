@@ -153,7 +153,18 @@ app.patch('/api/v1/breweries/:id', (request, response) => {
     .catch((error) => response.status(500).json({ error }))
   })
 
-app.patch('/api/v1/breweries/:id', (request, response) => {
+// app.get('/api/v1/beers/:breweryID', (request, response) => {
+//   database('beers')
+//     .select()
+//     .where('breweryID', request.params.breweryID)
+//     .count('* as total')
+//     .then((count) => {
+//       console.log(count);
+//       response.status(200)
+//     })
+//     .catch((error) => response.status(500).json({ error }))
+// })
 
-})
+app.patch('/api/v1')
+
 module.exports = app;
