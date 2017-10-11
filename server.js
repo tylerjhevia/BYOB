@@ -138,7 +138,7 @@ app.post('/api/v1/beers', (request, response) => {
     .catch(error => response.status(500).json({ error }));
 })
 
-app.patch('/api/v1/breweries/:id', (request, response) => {  
+app.patch('/api/v1/breweries/:id', (request, response) => {
   database('breweries')
     .where('id', request.params.id)
     .update({
@@ -153,4 +153,7 @@ app.patch('/api/v1/breweries/:id', (request, response) => {
     .catch((error) => response.status(500).json({ error }))
   })
 
+app.patch('/api/v1/breweries/:id', (request, response) => {
+
+})
 module.exports = app;
