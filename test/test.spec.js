@@ -41,7 +41,10 @@ describe("API routes", () => {
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a("array");
-        response.body.length.should.equal(2);
+        response.body.length.should.equal(3);
+        response.body
+          .filter(brewery => brewery.name === "105 West Brewing Company")
+          .length.should.equal(1);
         response.body[0].should.have.property("name");
         response.body[0].name.should.be.a("string");
         response.body[0].should.have.property("location");
@@ -61,13 +64,34 @@ describe("API routes", () => {
     });
   });
 
+  describe("GET /api/v1/breweries/?location", () => {
+    it("should fetch breweries based on location", done => {
+      chai
+        .request(server)
+        .get("/api/v1/breweries/?location=Castle Rock")
+        .end((err, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a("array");
+          response.body.length.should.equal(2);
+          response.body
+            .every(brewery => brewery.location === "Castle Rock")
+            .should.equal(true);
+          done();
+        });
+    });
+  });
+
   describe("GET /api/v1/beers", () => {
     it("should fetch all beers", done => {
       chai.request(server).get("/api/v1/beers").end((err, response) => {
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a("array");
-        response.body.length.should.equal(77);
+        response.body.length.should.equal(101);
+        response.body
+          .filter(beer => beer.name === "12 Degree Pink Panther")
+          .length.should.equal(1);
         response.body[0].should.have.property("name");
         response.body[0].name.should.be.a("string");
         response.body[0].should.have.property("type");
