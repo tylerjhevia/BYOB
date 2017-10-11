@@ -121,4 +121,19 @@ app.post('/api/v1/breweries', (request, response) => {
     .catch(error => response.status(500).json({ error }));
 })
 
+app.post('/api/v1/beers', (request, response) => {
+  const requiredKeys = ['name', 'brewery', 'type', 'breweryID'];
+
+  for (let keys of requiredKeys) {
+    if (!request.body[keys]) {
+      return response.status(400).json({ error: `Check your format. Missing key: ${keys}` })
+    }
+  }
+
+  database('beers')
+    .insert(request.body, '*')
+    .then(beer => response.status(201).json(beer[0]))
+    .catch(error => response.status(500).json({ error }));
+})
+
 module.exports = app;
