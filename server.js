@@ -3,8 +3,12 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const path = require("path");
+const key = require("./key");
 
 const environment = process.env.NODE_ENV || "development";
+
+const secretKey = process.env.SECRET_KEY || key;
+
 const configuration = require("./knexfile")[environment];
 const database = require("knex")(configuration);
 
@@ -20,6 +24,7 @@ app.listen(app.get("port"), () => {
 });
 
 app.get("/api/v1/breweries", (request, response) => {
+  console.log("key", key);
   if (request.query.location) {
     const { location } = request.query;
     return database("breweries")
