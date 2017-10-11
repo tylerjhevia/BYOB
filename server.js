@@ -32,7 +32,7 @@ app.get("/api/v1/breweries", (request, response) => {
               error: `Could not find any breweries with location: ${location}`
             });
       })
-      .catch(error => response.sendStatus(500).json({ error }));
+      .catch(error => response.status(500).json({ error }));
   }
 
   database("breweries")
@@ -41,7 +41,7 @@ app.get("/api/v1/breweries", (request, response) => {
       response.status(200).json(breweries);
     })
     .catch(error => {
-      response.sendStatus(500).json({ error });
+      response.status(500).json({ error });
     });
 });
 
@@ -59,7 +59,7 @@ app.get("/api/v1/beers", (request, response) => {
             });
       })
       .catch(error => {
-        response.sendStatus(500).json({ error });
+        response.status(500).json({ error });
       });
   }
 
@@ -69,7 +69,7 @@ app.get("/api/v1/beers", (request, response) => {
       response.status(200).json(beers);
     })
     .catch(error => {
-      response.sendStatus(500).json({ error });
+      response.status(500).json({ error });
     });
 });
 
@@ -86,7 +86,7 @@ app.get("/api/v1/breweries/:id", (request, response) => {
             .json({ error: `Could not find a brewery with id: ${id}` });
     })
     .catch(error => {
-      response.sendStatus(500).json({ error });
+      response.status(500).json({ error });
     });
 });
 
@@ -101,7 +101,7 @@ app.get("/api/v1/beers/:breweryID", (request, response) => {
         : response.sendStatus(404);
     })
     .catch(error => {
-      response.sendStatus(500).json({ error });
+      response.status(500).json({ error });
     });
 });
 
