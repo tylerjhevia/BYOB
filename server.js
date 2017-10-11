@@ -1,13 +1,20 @@
 const express = require('express');
 
 const app = express();
-const bodyParser = require('body-parser');
-const path = require('path');
+
+const bodyParser = require("body-parser");
+const path = require("path");
+const key = require("./key");
+
 const jwt = require('jsonwebtoken');
 
-const environment = process.env.NODE_ENV || 'development';
-const configuration = require('./knexfile')[environment];
-const database = require('knex')(configuration);
+const environment = process.env.NODE_ENV || "development";
+
+const secretKey = process.env.SECRET_KEY || key;
+
+const configuration = require("./knexfile")[environment];
+const database = require("knex")(configuration);
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,6 +26,10 @@ app.locals.title = 'BYOB';
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
+
+
+app.get("/api/v1/breweries", (request, response) => {
+  console.log("key", key);
 
 // if (!request.body.email.includes('@turing.io') || request.body.admin === false) {
 //   return response.status(400).json({ error: 'Missing privileges' });
@@ -37,6 +48,7 @@ app.post('/api/v1/authenticate', (request, response) => {
 });
 
 app.get('/api/v1/breweries', (request, response) => {
+
   if (request.query.location) {
     const { location } = request.query;
     return database('breweries')
