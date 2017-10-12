@@ -150,7 +150,6 @@ describe("API routes", () => {
           done()
         })
     })
-
   })
 
   describe("GET /api/v1/beers", () => {
@@ -201,7 +200,7 @@ describe("API routes", () => {
           response.body[0].should.have.property("updated_at");
           response.body[0].updated_at.should.be.a("string");
           response.body.filter(beer => beer.type !== 'Belgian Ale').length.should.equal(0)
-          done()
+          done();
         })
     })
 
@@ -212,7 +211,40 @@ describe("API routes", () => {
           response.should.have.status(404);
           response.should.be.json;
           response.body.error.should.equal('Could not find any beers of type: Tylers uber duber special beer.')
-          done()
+          done();
+        })
+    })
+
+    it('should return all beers of a given brewery id', (done) => {
+      chai.request(server)
+        .get('/api/v1/beers/1')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(20);
+          response.body[0].should.have.property("brewery");
+          response.body[0].brewery.should.be.a("string");
+          response.body[0].should.have.property("breweryID");
+          response.body[0].breweryID.should.be.a("number");
+          response.body[0].should.have.property("id");
+          response.body[0].id.should.be.a("number");
+          response.body[0].should.have.property("created_at");
+          response.body[0].created_at.should.be.a("string");
+          response.body[0].should.have.property("updated_at");
+          response.body[0].updated_at.should.be.a("string");
+          response.body.filter(beer => beer.breweryID !== 1).length.should.equal(0);
+          response.body.filter(beer => beer.name === '105 West Berliner Weisse').length.should.equal(1);
+          done();
+        })
+    })
+
+    it('should return a 404 if no beers of a brewery were found', (done) => {
+      chai.request(server)
+        .get('/api/v1/beers/10')
+        .end((err, response) => {
+          response.should.have.status(404);
+          done();
         })
     })
   });
