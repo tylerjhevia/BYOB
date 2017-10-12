@@ -373,7 +373,6 @@ describe("API routes", () => {
           admin: nonAdminToken.admin
         })
         .end((error, response) => {
-          console.log(response.status);
           response.should.have.status(403);
           response.should.be.json;
           response.body.error.should.equal("No admin privileges");
@@ -506,6 +505,7 @@ describe("API routes", () => {
     });
   });
 
+
   describe('PATCH /api/v1/breweries/:id', () => {
     it('should patch a brewery with a specific id', (done) => {
       chai.request(server)
@@ -601,6 +601,159 @@ describe("API routes", () => {
     })
   })
 
+
+
+  describe("DELETE /api/v1/breweries/:id", done => {
+    it("should delete a brewery with a given id", () => {
+      chai.request(server).get("/api/v1/breweries").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(3);
+      });
+      chai
+        .request(server)
+        .delete("/api/v1/breweries/1")
+        .send({
+          email: "tyler@turing.io",
+          appName: "Awesome",
+          token: adminToken.token,
+          admin: adminToken.admin
+        })
+        .set("Authorization", adminToken)
+        .end((error, response) => {
+          response.should.have.status(204);
+          done();
+        });
+      chai.request(server).get("/api/v1/breweries").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(2);
+      });
+    });
+
+    it("should not delete a brewery from database if admin is false", done => {
+      chai.request(server).get("/api/v1/breweries").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(3);
+      });
+
+      chai
+        .request(server)
+        .delete("/api/v1/breweries/1")
+        .set("Authorization", nonAdminToken)
+        .send({
+          email: "tyler",
+          appName: "Awesome",
+          token: nonAdminToken.token,
+          admin: nonAdminToken.admin
+        })
+        .end((error, response) => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.error.should.equal("No admin privileges");
+        });
+
+      chai.request(server).get("/api/v1/breweries").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(3);
+        done();
+      });
+    });
+
+    it("should return an error if supplied ID does not match any existing brewery ID", done => {
+      chai
+        .request(server)
+        .delete("/api/v1/breweries/6")
+        .send({
+          email: "tyler@turing.io",
+          appName: "Awesome",
+          token: adminToken.token,
+          admin: adminToken.admin
+        })
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.body.error.should.equal("Nothing to delete with id of 6");
+          done();
+        });
+    });
+  });
+
+  describe("DELETE /api/v1/beers/:id", () => {
+    it("should delete a beer from the database", done => {
+      chai.request(server).get("/api/v1/beers").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(101);
+      });
+
+      chai
+        .request(server)
+        .delete("/api/v1/beers/80")
+        .send({
+          email: "tyler@turing.io",
+          appName: "Awesome",
+          token: adminToken.token,
+          admin: adminToken.admin
+        })
+        .end((error, response) => {
+          response.should.have.status(204);
+        });
+
+      chai.request(server).get("/api/v1/beers").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(100);
+        done();
+      });
+    });
+
+    it("should not delete a beer from database if admin is false", done => {
+      chai.request(server).get("/api/v1/beers").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(101);
+      });
+
+      chai
+        .request(server)
+        .delete("/api/v1/beers/80")
+        .set("Authorization", nonAdminToken)
+        .send({
+          email: "tyler",
+          appName: "Awesome",
+          token: nonAdminToken.token,
+          admin: nonAdminToken.admin
+        })
+        .end((error, response) => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.error.should.equal("No admin privileges");
+        });
+
+      chai.request(server).get("/api/v1/beers").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(101);
+        done();
+      });
+    });
+
+    it.only(
+      "should return an error if supplied ID does not match any existing beer ID",
+      done => {
+        chai
+          .request(server)
+          .delete("/api/v1/beers/945999")
+          .send({
+            email: "tyler@turing.io",
+            appName: "Awesome",
+            token: adminToken.token,
+            admin: adminToken.admin
+          })
+          .end((error, response) => {
+            response.should.have.status(422);
+            response.body.error.should.equal(
+              "Nothing to delete with id of 945999"
+            );
+            done();
+          });
+      }
+    );
+  });
 
 });
 
