@@ -31,10 +31,10 @@ const appendToken = (authorization, userInfo) => {
     return $('.display').append('<h1>SWEET ACTION</h1>');
   }
   $('.display').append(`<div class='authorization'>
-    <p class='email'>EMAIL: ${email}</p>
-    <p class='appName'>APP NAME: ${appName}</p>
-    <p class='token'>TOKEN: ${token}</p>
-    <p class='admin'>ADMIN PRIVILEGES: ${admin}</p>
+    <p class='email'>EMAIL: <span>${email}</span></p>
+    <p class='appName'>APP NAME: <span>${appName}</span></p>
+    <p class='token'>TOKEN: <span>${token}</span></p>
+    <p class='admin'>ADMIN PRIVILEGES: <span>${admin}</span></p>
     </div>`);
 };
 
@@ -43,6 +43,6 @@ const clearFields = () => {
   $('.appName-input').val('');
 };
 
-$('.submit-button').on('click', authenticate).on('click', clearFields);
+$('.submit-button').on('click', authenticate).on('click', clearFields).on('click', toggleButton);
 $('.email-input').on('input', toggleButton);
 $('.appName-input').on('input', toggleButton);

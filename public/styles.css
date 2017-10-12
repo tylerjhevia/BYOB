@@ -80,3 +80,7 @@ p {
   width: 60vh;
   overflow-wrap: break-word;
 }
+
+span {
+  font-weight: bold;
+}
