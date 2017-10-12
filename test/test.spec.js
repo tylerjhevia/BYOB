@@ -6,8 +6,8 @@ const environment = process.env.NODE_ENV || "test";
 const configuration = require("../knexfile")[environment];
 const database = require("knex")(configuration);
 
-let adminToken;
-let nonAdminToken;
+// let adminToken;
+// let nonAdminToken;
 
 const makeToken = (email, appName) => {
   chai.request(server)
@@ -17,12 +17,10 @@ const makeToken = (email, appName) => {
       "appName": appName
     })
     .end((error, response) => {
-      response.body.admin ? adminToken = response.body : nonAdminToken = response.body
-      console.log('admin', adminToken);
-      console.log('non', nonAdminToken);
+      return response.body.admin ? adminToken = response.body : nonAdminToken = response.body
       done()
     })
-
+    // return response.body.admin ? adminToken : nonAdminToken
 }
 
 chai.use(chaiHttp);
@@ -142,6 +140,61 @@ describe("API routes", () => {
       });
     });
   });
+
+  describe('POST /api/v1/authenticate', () => {
+    it('should return an object with a token and admin equal to false', (done) => {
+      chai.request(server)
+        .post('/api/v1/authenticate')
+        .send({
+          "email": 'tyl@er',
+          "appName": 'relyt'
+        })
+        .end((error, response) => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.have.property('token');
+          response.body.token.should.be.a('string');
+          response.body.should.have.property('admin');
+          response.body.admin.should.be.a('boolean');
+          response.body.admin.should.equal(false);
+          done()
+        })
+    })
+
+    it('should return an object with a token and admin equal to true', (done) => {
+      chai.request(server)
+        .post('/api/v1/authenticate')
+        .send({
+          "email": 'tyl@turing.io',
+          "appName": 'relyt'
+        })
+        .end((error, response) => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.have.property('token');
+          response.body.token.should.be.a('string');
+          response.body.should.have.property('admin');
+          response.body.admin.should.be.a('boolean');
+          response.body.admin.should.equal(true);
+          done()
+        })
+    })
+
+    it('should not return an object if missing input and have a message', (done) => {
+      chai.request(server)
+        .post('/api/v1/authenticate')
+        .send({
+          "email": '',
+          "appName": 'relyt'
+        })
+        .end((error, response) => {
+          response.should.have.status(400);
+          response.should.be.json;
+          response.body.error.should.equal('Missing Keys');
+          done()
+        })
+    })
+  })
 });
 
 after(() => {
