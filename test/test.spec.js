@@ -23,7 +23,6 @@ const makeToken = (email, appName) => {
         : (nonAdminToken = response.body);
       done();
     });
-  // return response.body.admin ? adminToken : nonAdminToken
 };
 
 chai.use(chaiHttp);
@@ -317,8 +316,6 @@ describe("API routes", () => {
   });
 
   describe("POST /api/v1/breweries", () => {
-    console.log("admin", adminToken);
-    console.log("non admin", nonAdminToken);
     it("should add a new brewery to database", done => {
       chai.request(server).get("/api/v1/breweries").end((error, response) => {
         response.should.have.status(200);
@@ -408,6 +405,101 @@ describe("API routes", () => {
           response.should.be.json;
           response.body.error.should.equal(
             "Check your format. Missing key: beerCount"
+          );
+          done();
+        });
+    });
+  });
+
+  describe("POST /api/v1/beers", () => {
+    it("should add a new beer to database", done => {
+      chai.request(server).get("/api/v1/beers").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(101);
+      });
+
+      chai
+        .request(server)
+        .post("/api/v1/beers")
+        .set("Authorization", adminToken)
+        .send({
+          name: "Fun beer",
+          brewery: "105 West Brewing Company",
+          breweryID: 1,
+          type: "beer",
+          email: "tyler@turing.io",
+          appName: "Awesome",
+          token: adminToken.token,
+          admin: adminToken.admin
+        })
+        .end((error, response) => {
+          response.should.have.status(201);
+          response.body.id.should.equal(102);
+          response.body.name.should.equal("Fun beer");
+          response.body.brewery.should.equal("105 West Brewing Company");
+          response.body.breweryID.should.equal(1);
+          response.body.type.should.equal("beer");
+          done();
+        });
+
+      chai.request(server).get("/api/v1/beers").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(101);
+      });
+    });
+
+    it("should not add a new beer to database if admin is false", done => {
+      chai.request(server).get("/api/v1/breweries").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(101);
+      });
+
+      chai
+        .request(server)
+        .post("/api/v1/breweries")
+        .set("Authorization", nonAdminToken)
+        .send({
+          name: "Fun beer",
+          brewery: "105 West Brewing Company",
+          breweryID: 1,
+          type: "beer",
+          email: "tyler",
+          appName: "Awesome",
+          token: nonAdminToken.token,
+          admin: nonAdminToken.admin
+        })
+        .end((error, response) => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.error.should.equal("No admin privileges");
+          done();
+        });
+
+      chai.request(server).get("/api/v1/beers").end((error, response) => {
+        response.should.have.status(200);
+        response.body.length.should.equal(101);
+      });
+    });
+
+    it("should return an error message if request body is missing required keys", done => {
+      chai
+        .request(server)
+        .post("/api/v1/beers")
+        .set("Authorization", adminToken)
+        .send({
+          name: "Fun beer",
+          breweryID: 1,
+          type: "beer",
+          email: "tyler@turing.io",
+          appName: "Awesome",
+          token: adminToken.token,
+          admin: adminToken.admin
+        })
+        .end((error, response) => {
+          response.should.have.status(400);
+          response.should.be.json;
+          response.body.error.should.equal(
+            "Check your format. Missing key: brewery"
           );
           done();
         });
