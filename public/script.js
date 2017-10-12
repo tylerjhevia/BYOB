@@ -8,7 +8,8 @@ const authenticate = () => {
     body: JSON.stringify(user),
     headers: { 'Content-Type': 'application/json' },
   })
-    .then(response => response.json()).then(response => appendToken(response))
+    .then(response => response.json())
+    .then(response => appendToken(response, user))
     .catch(error => console.log(error));
 };
 
@@ -22,16 +23,26 @@ const toggleButton = () => {
   }
 };
 
-const appendToken = authorization => {
-    const {token, admin} = authorization
-    $('.display').empty();
-    $('.display').append(`<div class='authorization'>
-    <p class='token'>Token: ${token}</p>
-    <p class='admin'>Admin privileges: ${admin}</p>
-    </div>`)
+const appendToken = (authorization, userInfo) => {
+  const { token, admin } = authorization;
+  const { email, appName } = userInfo;
+  $('.display').empty();
+  if (email.toLowerCase() === 'sweet' && appName.toLowerCase() === 'action') {
+    return $('.display').append('<h1>SWEET ACTION</h1>');
+  }
+  $('.display').append(`<div class='authorization'>
+    <p class='email'>EMAIL: ${email}</p>
+    <p class='appName'>APP NAME: ${appName}</p>
+    <p class='token'>TOKEN: ${token}</p>
+    <p class='admin'>ADMIN PRIVILEGES: ${admin}</p>
+    </div>`);
+};
 
-}
+const clearFields = () => {
+  $('.email-input').val('');
+  $('.appName-input').val('');
+};
 
-$('.submit-button').on('click', authenticate);
+$('.submit-button').on('click', authenticate).on('click', clearFields);
 $('.email-input').on('input', toggleButton);
 $('.appName-input').on('input', toggleButton);
