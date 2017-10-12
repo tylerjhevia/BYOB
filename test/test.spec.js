@@ -123,6 +123,36 @@ describe("API routes", () => {
       })
   });
 
+  describe('GET /api/v1/breweries/:id', (request, response) => {
+    it('should fetch a brewery by ID', (done) => {
+      chai.request(server)
+        .get('/api/v1/breweries/1')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('object')
+          response.body.id.should.equal(1)
+          response.body.name.should.equal('105 West Brewing Company');
+          response.body.location.should.equal('Castle Rock');
+          response.body.beerCount.should.equal(20);
+          response.body.year.should.equal(2015);
+          done()
+        })
+    })
+
+    it('should return a 404 if no breweries with an ID are found', (done) => {
+      chai.request(server)
+        .get('/api/v1/breweries/10')
+        .end((err, response) => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.body.error.should.equal('Could not find a brewery with id: 10')
+          done()
+        })
+    })
+
+  })
+
   describe("GET /api/v1/beers", () => {
     it("should fetch all beers", done => {
       chai.request(server).get("/api/v1/beers").end((err, response) => {
