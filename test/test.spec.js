@@ -150,6 +150,41 @@ describe("API routes", () => {
         done();
       });
     });
+
+    it('should return all the beers of a type', (done) => {
+      chai.request(server)
+        .get('/api/v1/beers?type=Belgian Ale')
+        .end((error, response) => {
+          console.log(response.body.length);
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.length.should.equal(13);
+          response.body[0].type.should.equal('Belgian Ale');
+          response.body[0].should.have.property("brewery");
+          response.body[0].brewery.should.be.a("string");
+          response.body[0].should.have.property("breweryID");
+          response.body[0].breweryID.should.be.a("number");
+          response.body[0].should.have.property("id");
+          response.body[0].id.should.be.a("number");
+          response.body[0].should.have.property("created_at");
+          response.body[0].created_at.should.be.a("string");
+          response.body[0].should.have.property("updated_at");
+          response.body[0].updated_at.should.be.a("string");
+          response.body.filter(beer => beer.type !== 'Belgian Ale').length.should.equal(0)
+          done()
+        })
+    })
+
+    it('should return a 404 if no beers of type were found', (done) => {
+      chai.request(server)
+        .get('/api/v1/beers?type=Tylers uber duber special beer')
+        .end((err, response) => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.body.error.should.equal('Could not find any beers of type: Tylers uber duber special beer.')
+          done()
+        })
+    })
   });
 
   describe('POST /api/v1/authenticate', () => {

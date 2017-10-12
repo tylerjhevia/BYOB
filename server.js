@@ -102,7 +102,7 @@ app.get('/api/v1/beers', (request, response) => {
         beers.length
           ? response.status(200).json(beers)
           : response.status(404).json({
-            error: `Could not find any beers of type: ${type}. Check your format. `,
+            error: `Could not find any beers of type: ${type}.`,
           });
       })
       .catch((error) => {
