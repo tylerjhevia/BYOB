@@ -154,11 +154,11 @@ app.get('/api/v1/beers/:breweryID', (request, response) => {
 
 app.post('/api/v1/breweries', checkAuth, (request, response) => {
   const requiredKeys = ['name', 'location', 'beerCount', 'year'];
+
   delete request.body.token
   delete request.body.email
   delete request.body.admin
   delete request.body.appName
-  console.log('post body', request.body);
 
   for (const keys of requiredKeys) {
     if (!request.body[keys]) {
@@ -172,8 +172,13 @@ app.post('/api/v1/breweries', checkAuth, (request, response) => {
     .catch(error => response.status(500).json({ error }));
 });
 
-app.post('/api/v1/beers', (request, response) => {
+app.post('/api/v1/beers', checkAuth, (request, response) => {
   const requiredKeys = ['name', 'brewery', 'type', 'breweryID'];
+
+  delete request.body.token
+  delete request.body.email
+  delete request.body.admin
+  delete request.body.appName
 
   for (const keys of requiredKeys) {
     if (!request.body[keys]) {
@@ -239,7 +244,12 @@ app.patch('/api/v1/beers/:id', (request, response) => {
     .catch(error => response.status(500).json({ error }));
 });
 
-app.delete('/api/v1/breweries/:id', (request, response) => {
+app.delete('/api/v1/breweries/:id', checkAuth, (request, response) => {
+  delete request.body.token
+  delete request.body.email
+  delete request.body.admin
+  delete request.body.appName
+
   database('breweries')
     .del()
     .where('id', request.params.id)
@@ -254,7 +264,12 @@ app.delete('/api/v1/breweries/:id', (request, response) => {
     .catch(error => response.status(500).json({ error }));
 });
 
-app.delete('/api/v1/beers/:id', (request, response) => {
+app.delete('/api/v1/beers/:id', checkAuth, (request, response) => {
+  delete request.body.token
+  delete request.body.email
+  delete request.body.admin
+  delete request.body.appName
+
   database('beers')
     .del()
     .where('id', request.params.id)
