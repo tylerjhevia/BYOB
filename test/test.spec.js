@@ -110,6 +110,17 @@ describe("API routes", () => {
           done();
         });
     });
+
+      it('should return a 404 if no breweries were found', (done) => {
+        chai.request(server)
+          .get('/api/v1/breweries/?location=Narnia')
+          .end((err, response) => {
+            response.should.have.status(404);
+            response.should.be.json;
+            response.body.error.should.equal('Could not find any breweries with location: Narnia')
+            done()
+          })
+      })
   });
 
   describe("GET /api/v1/beers", () => {
@@ -195,6 +206,7 @@ describe("API routes", () => {
         })
     })
   })
+
 });
 
 after(() => {
