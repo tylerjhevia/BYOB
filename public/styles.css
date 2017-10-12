@@ -27,7 +27,7 @@ main {
   border-radius: 3px;
   display: flex;
   flex-direction: column;
-  height: 50vh;
+  height: 60vh;
   width: 60vh;
   margin-top: 10px;
   padding: 20px;
@@ -46,11 +46,12 @@ main {
 
 .submit-button {
   border: none;
+  font-size: 16px;
   margin: 20px;
+  margin-bottom: 40px;
   outline: none;
   padding: 5px;
   width: 310px;
-  font-size: 16px;
 }
 
 .submit-button:hover {
@@ -72,6 +73,9 @@ main {
 }
 
 p {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
   margin-bottom: 5px;
   letter-spacing: 1.05px;
 }
@@ -82,5 +86,5 @@ p {
 }
 
 span {
-  font-weight: bold;
+  font-weight: normal;
 }
