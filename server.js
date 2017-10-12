@@ -1,17 +1,11 @@
 const express = require('express');
-
 const app = express();
-
 const bodyParser = require("body-parser");
 const path = require("path");
-const key = require("./key");
-
+// const key = require("./key");
 const jwt = require('jsonwebtoken');
-
+const secretKey = process.env.SECRET_KEY || 'hops';
 const environment = process.env.NODE_ENV || "development";
-
-const secretKey = process.env.SECRET_KEY || key;
-
 const configuration = require("./knexfile")[environment];
 const database = require("knex")(configuration);
 
@@ -27,25 +21,55 @@ app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
 
-
-app.get("/api/v1/breweries", (request, response) => {
-  console.log("key", key);
-
 // if (!request.body.email.includes('@turing.io') || request.body.admin === false) {
 //   return response.status(400).json({ error: 'Missing privileges' });
 // }
 
+const checkAuth = (request, response, next) => {
+  let token;
+  console.log(request.body);
+
+  if (!request.body.token && !request.query.token && !request.headers.authorization) {
+    return response.status(403).json({ error: 'You must be authorized to hit this endpoint' });
+  }
+
+  if (request.body.token) {
+    token = request.body.token
+  } else if (request.query.token) {
+    token = request.query.token
+  } else {
+    token = request.headers.authorization
+  }
+
+  jwt.verify(token, secretKey, (err, decoded) => {
+    console.log(decoded)
+    if (err) {
+      return response.status(403).json({ error: 'Token Invalid' });
+    } else if (!decoded.appName || !decoded.email) {
+      return response.status(400).json({ error: 'Missing Field' });
+    } else if (request.body.admin === false) {
+      return response.status(403).json({ error: 'No admin privileges' })
+    }
+  })
+  next()
+}
+
 app.post('/api/v1/authenticate', (request, response) => {
   for (let keys of ['email', 'appName']) {
     if (!request.body[keys]) {
-      return repsonse.status(400).json({ error: 'Missing Keys' });
+      return response.status(400).json({ error: 'Missing Keys' });
     }
   }
 
-  const token = jwt.sign(request.body, app.get('process.env.SECRET_KEY'), { expiresIn: '48h' });
+  const token = jwt.sign(request.body, secretKey, { expiresIn: '48h' });
 
-  response.status(201).json({ token });
+  if (request.body['email'].includes('@turing.io')) {
+    return response.status(201).json(Object.assign({}, { token }, { admin: true }));
+  }
+  response.status(201).json(Object.assign({}, { token }, { admin: false }));
 });
+
+
 
 app.get('/api/v1/breweries', (request, response) => {
 
@@ -128,8 +152,13 @@ app.get('/api/v1/beers/:breweryID', (request, response) => {
     });
 });
 
-app.post('/api/v1/breweries', (request, response) => {
+app.post('/api/v1/breweries', checkAuth, (request, response) => {
   const requiredKeys = ['name', 'location', 'beerCount', 'year'];
+
+  delete request.body.token
+  delete request.body.email
+  delete request.body.admin
+  delete request.body.appName
 
   for (const keys of requiredKeys) {
     if (!request.body[keys]) {
@@ -143,8 +172,13 @@ app.post('/api/v1/breweries', (request, response) => {
     .catch(error => response.status(500).json({ error }));
 });
 
-app.post('/api/v1/beers', (request, response) => {
+app.post('/api/v1/beers', checkAuth, (request, response) => {
   const requiredKeys = ['name', 'brewery', 'type', 'breweryID'];
+
+  delete request.body.token
+  delete request.body.email
+  delete request.body.admin
+  delete request.body.appName
 
   for (const keys of requiredKeys) {
     if (!request.body[keys]) {
@@ -210,7 +244,12 @@ app.patch('/api/v1/beers/:id', (request, response) => {
     .catch(error => response.status(500).json({ error }));
 });
 
-app.delete('/api/v1/breweries/:id', (request, response) => {
+app.delete('/api/v1/breweries/:id', checkAuth, (request, response) => {
+  delete request.body.token
+  delete request.body.email
+  delete request.body.admin
+  delete request.body.appName
+
   database('breweries')
     .del()
     .where('id', request.params.id)
@@ -225,7 +264,12 @@ app.delete('/api/v1/breweries/:id', (request, response) => {
     .catch(error => response.status(500).json({ error }));
 });
 
-app.delete('/api/v1/beers/:id', (request, response) => {
+app.delete('/api/v1/beers/:id', checkAuth, (request, response) => {
+  delete request.body.token
+  delete request.body.email
+  delete request.body.admin
+  delete request.body.appName
+
   database('beers')
     .del()
     .where('id', request.params.id)
@@ -235,7 +279,7 @@ app.delete('/api/v1/beers/:id', (request, response) => {
         ? response.sendStatus(204)
         : response.status(422).send({
           error: `Nothing to delete with id of ${request.params.id}`,
-        });
+        })
     })
     .catch(error => response.status(500).json({ error }));
 });
