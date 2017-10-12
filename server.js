@@ -25,6 +25,33 @@ app.listen(app.get('port'), () => {
 //   return response.status(400).json({ error: 'Missing privileges' });
 // }
 
+const checkAuth = (request, response, next) => {
+  let token;
+
+  if (!request.body.token && !request.query.token && !request.headers.authorization) {
+    return response.status(403).json({ error: 'You must be authorized to hit this endpoint' });
+  }
+
+  if (request.body.token) {
+    token = request.body.token
+  } else if (request.query.token) {
+    token = request.query.token
+  } else {
+    token = request.headers.authorization
+  }
+
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      return response.status(403).json({ error: 'Token Invalid' });
+    } else if (!decoded.appName || !decoded.email) {
+      return response.status(400).json({ error: 'Missing Field' });
+    } else if (!decoded.admin) {
+      return response.status(403).json({ error: 'No admin privileges' })
+    }
+    next()
+  })
+}
+
 app.post('/api/v1/authenticate', (request, response) => {
   for (let keys of ['email', 'appName']) {
     if (!request.body[keys]) {
@@ -34,8 +61,13 @@ app.post('/api/v1/authenticate', (request, response) => {
 
   const token = jwt.sign(request.body, secretKey, { expiresIn: '48h' });
 
-  response.status(201).json({ token });
+  if (request.body['email'].includes('@turing.io')) {
+    return response.status(201).json(Object.assign({}, { token }, { admin: true }));
+  }
+  response.status(201).json(Object.assign({}, { token }, { admin: false }));
 });
+
+
 
 app.get('/api/v1/breweries', (request, response) => {
 
