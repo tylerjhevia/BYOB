@@ -1,0 +1,82 @@
+* {
+  font-family: 'Raleway', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  align-items: center;
+  background-image: url(https://source.unsplash.com/user/davidbecker6081/likes/1600x900);
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 60px;
+  color: #feffff;
+  font-family: 'PT Serif', serif;
+}
+
+main {
+  align-items: center;
+  background-color: rgba(92, 90, 89, 0.82);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+  width: 60vh;
+  margin-top: 10px;
+  padding: 20px;
+  opacity: .8;
+}
+
+.email-input,
+.appName-input {
+  margin: 10px;
+  width: 300px;
+  padding: 5px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
+  border: none;
+}
+
+.submit-button {
+  border: none;
+  margin: 20px;
+  outline: none;
+  padding: 5px;
+  width: 310px;
+  font-size: 16px;
+}
+
+.submit-button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.submit-button:disabled:hover {
+  cursor: default;
+  opacity: 1.0;
+}
+
+.authorization {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  color: #feffff;
+}
+
+p {
+  margin-bottom: 5px;
+  letter-spacing: 1.05px;
+}
+
+.token {
+  width: 60vh;
+  overflow-wrap: break-word;
+}
