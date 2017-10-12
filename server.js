@@ -27,6 +27,7 @@ app.listen(app.get('port'), () => {
 
 const checkAuth = (request, response, next) => {
   let token;
+  console.log(request.body);
 
   if (!request.body.token && !request.query.token && !request.headers.authorization) {
     return response.status(403).json({ error: 'You must be authorized to hit this endpoint' });
@@ -41,21 +42,22 @@ const checkAuth = (request, response, next) => {
   }
 
   jwt.verify(token, secretKey, (err, decoded) => {
+    console.log(decoded)
     if (err) {
       return response.status(403).json({ error: 'Token Invalid' });
     } else if (!decoded.appName || !decoded.email) {
       return response.status(400).json({ error: 'Missing Field' });
-    } else if (!decoded.admin) {
+    } else if (request.body.admin === false) {
       return response.status(403).json({ error: 'No admin privileges' })
     }
-    next()
   })
+  next()
 }
 
 app.post('/api/v1/authenticate', (request, response) => {
   for (let keys of ['email', 'appName']) {
     if (!request.body[keys]) {
-      return repsonse.status(400).json({ error: 'Missing Keys' });
+      return response.status(400).json({ error: 'Missing Keys' });
     }
   }
 
@@ -150,8 +152,13 @@ app.get('/api/v1/beers/:breweryID', (request, response) => {
     });
 });
 
-app.post('/api/v1/breweries', (request, response) => {
+app.post('/api/v1/breweries', checkAuth, (request, response) => {
   const requiredKeys = ['name', 'location', 'beerCount', 'year'];
+  delete request.body.token
+  delete request.body.email
+  delete request.body.admin
+  delete request.body.appName
+  console.log('post body', request.body);
 
   for (const keys of requiredKeys) {
     if (!request.body[keys]) {
