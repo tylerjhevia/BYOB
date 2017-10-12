@@ -218,11 +218,11 @@ app.patch("/api/v1/breweries/:id", (request, response) => {
     )
     .then(update => {
       if (!update.length) {
-        response.status(404).json({
+        return response.status(404).json({
           error: `Cannot find a brewery with the id of ${request.params.id}`
         });
       }
-      response.status(200).json({ updatedBrewery: update[0] });
+      return response.status(200).json({ updatedBrewery: update[0] });
     })
     .catch(error => response.status(500).json({ error }));
 });
@@ -238,11 +238,11 @@ app.patch("/api/v1/beers/:id", (request, response) => {
     )
     .then(update => {
       if (!update.length) {
-        response.status(404).json({
+        return response.status(404).json({
           error: `Cannot find a beer with the id of ${request.params.id}`
         });
       }
-      response.status(200).json({ updatedBeer: update[0] });
+      return response.status(200).json({ updatedBeer: update[0] });
     })
     .catch(error => response.status(500).json({ error }));
 });
