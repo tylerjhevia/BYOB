@@ -1,10 +1,29 @@
-const chai = require("chai");
+const chai = require('chai');
 const should = chai.should();
 const chaiHttp = require("chai-http");
 const server = require("../server");
 const environment = process.env.NODE_ENV || "test";
 const configuration = require("../knexfile")[environment];
 const database = require("knex")(configuration);
+
+let adminToken;
+let nonAdminToken;
+
+const makeToken = (email, appName) => {
+  chai.request(server)
+    .post('/api/v1/authenticate')
+    .send({
+      "email": email,
+      "appName": appName
+    })
+    .end((error, response) => {
+      response.body.admin ? adminToken = response.body : nonAdminToken = response.body
+      console.log('admin', adminToken);
+      console.log('non', nonAdminToken);
+      done()
+    })
+
+}
 
 chai.use(chaiHttp);
 
@@ -14,6 +33,19 @@ describe("test", () => {
     neat.should.equal(true);
   });
 });
+
+describe('DOM', () => {
+  it('should display the home page', (done) => {
+    chai.request(server)
+    .get('/')
+    .end((error, response) => {
+      response.should.have.status(200)
+      response.should.be.html
+      response.text.exists
+      done()
+    })
+  })
+})
 
 describe("API routes", () => {
   beforeEach(done => {

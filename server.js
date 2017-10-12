@@ -26,7 +26,6 @@ app.listen(app.get('port'), () => {
 
 const checkAuth = (request, response, next) => {
   let token;
-  console.log(request.body);
 
   if (!request.body.token && !request.query.token && !request.headers.authorization) {
     return response.status(403).json({ error: 'You must be authorized to hit this endpoint' });
@@ -41,7 +40,6 @@ const checkAuth = (request, response, next) => {
   }
 
   jwt.verify(token, secretKey, (err, decoded) => {
-    console.log(decoded);
     if (err) {
       return response.status(403).json({ error: 'Token Invalid' });
     } else if (!decoded.appName || !decoded.email) {
