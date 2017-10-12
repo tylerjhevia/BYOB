@@ -520,9 +520,16 @@ describe("API routes", () => {
           response.body.updatedBrewery.beerCount.should.equal(0);
           done();
         })
+
+        chai.request(server)
+          .get('/api/v1/breweries/1')
+          .end((error, response) => {
+            response.body[0].beerCount.should.equal(0)
+            done()
+          })
     })
 
-    it.only('should return a 404 status if id cannot be found', (done) => {
+    it('should return a 404 status if id cannot be found', (done) => {
       chai.request(server)
         .patch('/api/v1/breweries/10')
         .send({
@@ -535,7 +542,66 @@ describe("API routes", () => {
           done();
         })
     })
+
+    it('should return a 500 status if wrong key value pair', (done) => {
+      chai.request(server)
+        .patch('/api/v1/breweries/10')
+        .send({
+          wrongKey: 'Wrong Value'
+        })
+        .end((error, response) => {
+          response.should.have.status(500);
+          response.should.be.json;
+          done();
+        })
+    })
   })
+
+  describe('PATCH /api/v1/beers/:id', () => {
+    it('should patch a beer with a specific id', (done) => {
+      chai.request(server)
+        .patch('/api/v1/beers/1')
+        .send({
+          name: 'Tylers SWEET ACTION beer'
+        })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.updatedBeer.should.be.a('object');
+          response.body.updatedBeer.name.should.equal('Tylers SWEET ACTION beer');
+          done();
+        })
+    })
+
+    it('should return a 404 status if id cannot be found', (done) => {
+      chai.request(server)
+        .patch('/api/v1/beers/200')
+        .send({
+          name: 'Tylers SWEET ACTION beer'
+        })
+        .end((error, response) => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.body.error.should.equal('Cannot find a beer with the id of 200');
+          done();
+        })
+    })
+
+    it('should return a 500 status if wrong key value pair', (done) => {
+      chai.request(server)
+        .patch('/api/v1/beers/10')
+        .send({
+          wrongKey: 'Wrong Value'
+        })
+        .end((error, response) => {
+          response.should.have.status(500);
+          response.should.be.json;
+          done();
+        })
+    })
+  })
+
+
 });
 
 after(() => {
