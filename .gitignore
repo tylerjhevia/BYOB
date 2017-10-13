@@ -60,3 +60,5 @@ typings/
 beerScript.js
 beer-scraper.js
 key.js
+
+.DS_store
