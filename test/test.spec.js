@@ -732,7 +732,7 @@ describe("API routes", () => {
       });
     });
 
-    it.only(
+    it(
       "should return an error if supplied ID does not match any existing beer ID",
       done => {
         chai
