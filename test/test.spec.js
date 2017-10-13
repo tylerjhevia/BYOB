@@ -505,103 +505,110 @@ describe("API routes", () => {
     });
   });
 
-
-  describe('PATCH /api/v1/breweries/:id', () => {
-    it('should patch a brewery with a specific id', (done) => {
-      chai.request(server)
-        .patch('/api/v1/breweries/1')
+  describe("PATCH /api/v1/breweries/:id", () => {
+    it("should patch a brewery with a specific id", done => {
+      chai
+        .request(server)
+        .patch("/api/v1/breweries/1")
         .send({
           beerCount: 0
         })
         .end((error, response) => {
           response.should.have.status(200);
           response.should.be.json;
-          response.body.updatedBrewery.should.be.a('object');
+          response.body.updatedBrewery.should.be.a("object");
           response.body.updatedBrewery.beerCount.should.equal(0);
           done();
-        })
+        });
 
-        chai.request(server)
-          .get('/api/v1/breweries/1')
-          .end((error, response) => {
-            response.body[0].beerCount.should.equal(0)
-            done()
-          })
-    })
+      chai.request(server).get("/api/v1/breweries/1").end((error, response) => {
+        response.body[0].beerCount.should.equal(0);
+        done();
+      });
+    });
 
-    it('should return a 404 status if id cannot be found', (done) => {
-      chai.request(server)
-        .patch('/api/v1/breweries/10')
+    it("should return a 404 status if id cannot be found", done => {
+      chai
+        .request(server)
+        .patch("/api/v1/breweries/10")
         .send({
           beerCount: 0
         })
         .end((error, response) => {
           response.should.have.status(404);
           response.should.be.json;
-          response.body.error.should.equal('Cannot find a brewery with the id of 10');
+          response.body.error.should.equal(
+            "Cannot find a brewery with the id of 10"
+          );
           done();
-        })
-    })
+        });
+    });
 
-    it('should return a 500 status if wrong key value pair', (done) => {
-      chai.request(server)
-        .patch('/api/v1/breweries/10')
+    it("should return a 500 status if wrong key value pair", done => {
+      chai
+        .request(server)
+        .patch("/api/v1/breweries/10")
         .send({
-          wrongKey: 'Wrong Value'
+          wrongKey: "Wrong Value"
         })
         .end((error, response) => {
           response.should.have.status(500);
           response.should.be.json;
           done();
-        })
-    })
-  })
+        });
+    });
+  });
 
-  describe('PATCH /api/v1/beers/:id', () => {
-    it('should patch a beer with a specific id', (done) => {
-      chai.request(server)
-        .patch('/api/v1/beers/1')
+  describe("PATCH /api/v1/beers/:id", () => {
+    it("should patch a beer with a specific id", done => {
+      chai
+        .request(server)
+        .patch("/api/v1/beers/1")
         .send({
-          name: 'Tylers SWEET ACTION beer'
+          name: "Tylers SWEET ACTION beer"
         })
         .end((error, response) => {
           response.should.have.status(200);
           response.should.be.json;
-          response.body.updatedBeer.should.be.a('object');
-          response.body.updatedBeer.name.should.equal('Tylers SWEET ACTION beer');
+          response.body.updatedBeer.should.be.a("object");
+          response.body.updatedBeer.name.should.equal(
+            "Tylers SWEET ACTION beer"
+          );
           done();
-        })
-    })
+        });
+    });
 
-    it('should return a 404 status if id cannot be found', (done) => {
-      chai.request(server)
-        .patch('/api/v1/beers/200')
+    it("should return a 404 status if id cannot be found", done => {
+      chai
+        .request(server)
+        .patch("/api/v1/beers/200")
         .send({
-          name: 'Tylers SWEET ACTION beer'
+          name: "Tylers SWEET ACTION beer"
         })
         .end((error, response) => {
           response.should.have.status(404);
           response.should.be.json;
-          response.body.error.should.equal('Cannot find a beer with the id of 200');
+          response.body.error.should.equal(
+            "Cannot find a beer with the id of 200"
+          );
           done();
-        })
-    })
+        });
+    });
 
-    it('should return a 500 status if wrong key value pair', (done) => {
-      chai.request(server)
-        .patch('/api/v1/beers/10')
+    it("should return a 500 status if wrong key value pair", done => {
+      chai
+        .request(server)
+        .patch("/api/v1/beers/10")
         .send({
-          wrongKey: 'Wrong Value'
+          wrongKey: "Wrong Value"
         })
         .end((error, response) => {
           response.should.have.status(500);
           response.should.be.json;
           done();
-        })
-    })
-  })
-
-
+        });
+    });
+  });
 
   describe("DELETE /api/v1/breweries/:id", done => {
     it("should delete a brewery with a given id", () => {
@@ -693,6 +700,7 @@ describe("API routes", () => {
           admin: adminToken.admin
         })
         .end((error, response) => {
+          console.log(response.body);
           response.should.have.status(204);
         });
 
@@ -732,29 +740,25 @@ describe("API routes", () => {
       });
     });
 
-    it.only(
-      "should return an error if supplied ID does not match any existing beer ID",
-      done => {
-        chai
-          .request(server)
-          .delete("/api/v1/beers/945999")
-          .send({
-            email: "tyler@turing.io",
-            appName: "Awesome",
-            token: adminToken.token,
-            admin: adminToken.admin
-          })
-          .end((error, response) => {
-            response.should.have.status(422);
-            response.body.error.should.equal(
-              "Nothing to delete with id of 945999"
-            );
-            done();
-          });
-      }
-    );
+    it("should return an error if supplied ID does not match any existing beer ID", done => {
+      chai
+        .request(server)
+        .delete("/api/v1/beers/945999")
+        .send({
+          email: "tyler@turing.io",
+          appName: "Awesome",
+          token: adminToken.token,
+          admin: adminToken.admin
+        })
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.body.error.should.equal(
+            "Nothing to delete with id of 945999"
+          );
+          done();
+        });
+    });
   });
-
 });
 
 after(() => {

@@ -170,7 +170,7 @@ app.post("/api/v1/breweries", checkAuth, (request, response) => {
     if (!request.body[keys]) {
       return response
         .status(400)
-        .json({ error: `Check your format. Missing key: ${keys}` });
+        .json({ error: `Missing key: ${keys}` });
     }
   }
   database("breweries")
