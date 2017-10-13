@@ -21,18 +21,18 @@ You can generate a new access token by visiting our [registration page](https://
 
 #### Brewery Endpoints
 
-- **[`GET` breweries]()**
-- **[`GET` breweries/:id]()**
-- **[`POST` breweries]()**
-- **[`PATCH` breweries/:id]()**
-- **[`DELETE` breweries/:id]()**
+- **[`GET` breweries](https://github.com/tylerjhevia/BYOB/blob/master/documentation/breweries_endpoints/GET_breweries.md)**
+- **[`GET` breweries/:id](https://github.com/tylerjhevia/BYOB/blob/master/documentation/breweries_endpoints/GET_breweries_id.md)**
+- **[`POST` breweries](https://github.com/tylerjhevia/BYOB/blob/master/documentation/breweries_endpoints/POST_breweries.md)**
+- **[`PATCH` breweries/:id](https://github.com/tylerjhevia/BYOB/blob/master/documentation/breweries_endpoints/PATCH_breweries_id.md)**
+- **[`DELETE` breweries/:id](https://github.com/tylerjhevia/BYOB/blob/master/documentation/breweries_endpoints/DELETE_breweries_id.md)**
 
 #### Beer Endpoints
 
-- **[`GET` beers]()**
-- **[`GET` beers/:breweryID]()**
-- **[`POST` beers]()**
-- **[`PATCH` beers/:id]()**
+- **[`GET` beers](https://github.com/tylerjhevia/BYOB/blob/master/documentation/beers_endpoints/GET%20beers.md)**
+- **[`GET` beers/:breweryID](https://github.com/tylerjhevia/BYOB/blob/master/documentation/beers_endpoints/GET%20beers:id.md)**
+- **[`POST` beers](https://github.com/tylerjhevia/BYOB/blob/master/documentation/beers_endpoints/POST%20beers.md)**
+- **[`PATCH` beers/:id](https://github.com/tylerjhevia/BYOB/blob/master/documentation/beers_endpoints/PATCH%20beers:id.md)**
 
-- **[`DELETE` beers/:id]()**
+- **[`DELETE` beers/:id](https://github.com/tylerjhevia/BYOB/blob/master/documentation/beers_endpoints/DELETE%20beers:id.md)**
 
