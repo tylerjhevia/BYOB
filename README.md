@@ -12,14 +12,14 @@ The API contains two tables with access to `breweries` and `beers` and returns a
 | Year                 | Brewery ID           |
 
 
-##Registration
+## Registration
 You can generate a new access token by visiting our [registration page](https://byob-db-th.herokuapp.com/). A valid email and app-name are required. Access tokens will expire after 48 hours of being generated. POST and DELETE requests require Admin access. Contact us for details. 
 
 ![BYOB-registration-page](https://i.imgur.com/VT38K9D.png)
 
-##Endpoints
+## Endpoints
 
-####Brewery Endpoints
+#### Brewery Endpoints
 
 - **[`GET` breweries]()**
 - **[`GET` breweries/:id]()**
@@ -27,7 +27,7 @@ You can generate a new access token by visiting our [registration page](https://
 - **[`PATCH` breweries/:id]()**
 - **[`DELETE` breweries/:id]()**
 
-####Beer Endpoints
+#### Beer Endpoints
 
 - **[`GET` beers]()**
 - **[`GET` beers/:breweryID]()**
