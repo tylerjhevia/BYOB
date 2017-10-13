@@ -740,24 +740,28 @@ describe("API routes", () => {
       });
     });
 
-    it("should return an error if supplied ID does not match any existing beer ID", done => {
-      chai
-        .request(server)
-        .delete("/api/v1/beers/945999")
-        .send({
-          email: "tyler@turing.io",
-          appName: "Awesome",
-          token: adminToken.token,
-          admin: adminToken.admin
-        })
-        .end((error, response) => {
-          response.should.have.status(422);
-          response.body.error.should.equal(
-            "Nothing to delete with id of 945999"
-          );
-          done();
-        });
-    });
+    it(
+      "should return an error if supplied ID does not match any existing beer ID",
+      done => {
+        chai
+          .request(server)
+          .delete("/api/v1/beers/945999")
+          .send({
+            email: "tyler@turing.io",
+            appName: "Awesome",
+            token: adminToken.token,
+            admin: adminToken.admin
+          })
+          .end((error, response) => {
+            response.should.have.status(422);
+            response.body.error.should.equal(
+              "Nothing to delete with id of 945999"
+            );
+            done();
+          });
+      }
+    );
+
   });
 });
 
