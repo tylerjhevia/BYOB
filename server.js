@@ -5,7 +5,6 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
-// const key = require("./key");
 const jwt = require('jsonwebtoken');
 
 const secretKey = process.env.SECRET_KEY || 'hops';
