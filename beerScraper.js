@@ -352,13 +352,6 @@ const links = [
 	'/brewers/zuni-street-brewing/30609/',
 	'/brewers/zwei-brewing/20617/',
 ];
-//
-// for (let i = 0; i < 1; i++) {
-
-var testLinks = [
-	'/brewers/zuni-street-brewing/30609/',
-	'/brewers/zwei-brewing/20617/',
-];
 
 links
 	.reduce(function(accumulator, url) {
