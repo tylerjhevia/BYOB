@@ -33,4 +33,6 @@ You can generate a new access token by visiting our [registration page](https://
 - **[`GET` beers/:breweryID]()**
 - **[`POST` beers]()**
 - **[`PATCH` beers/:id]()**
+
 - **[`DELETE` beers/:id]()**
+
