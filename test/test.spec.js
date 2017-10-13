@@ -436,7 +436,7 @@ describe('API routes', () => {
 					response.should.have.status(400);
 					response.should.be.json;
 					response.body.error.should.equal(
-						'Check your format. Missing key: beerCount'
+						'Missing key: beerCount'
 					);
 					done();
 				});
